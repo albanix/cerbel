@@ -1,9 +1,11 @@
-def volodya = "vova";
-def voloda_age = 18;
-if voloda_age < 18 {
-    voloda_age;
-    "Нельзя бухать";
+666;
+"string";
+true;
+false;
+
+def var = "variables";
+if var == "variables" {
+    true;
 } else {
-    voloda_age;
-    "Можно!";
+    false;
 }

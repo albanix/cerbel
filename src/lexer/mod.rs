@@ -50,7 +50,7 @@ impl Lexer {
                     tokens.push(Token::Number(n));
                 }
 
-                ch if ch.is_ascii_alphabetic() || ch == '.' => {
+                ch if ch.is_ascii_alphabetic() || ch == '_' => {
                     let identifier = self.read_identifier();
                     let token = match identifier.as_str() {
                         "def" => Token::Def,
