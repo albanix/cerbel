@@ -1,7 +1,0 @@
-def age = 11;
-
-if age == 5 {
-    age;
-} else {
-    age;
-}

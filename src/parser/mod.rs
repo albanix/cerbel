@@ -1,4 +1,4 @@
-use crate::{parser::{expr::Expr, stmt::Stmt}, tokens::Token};
+use crate::{parser::{expr::Expr, stmt::Stmt}, tokens::{Token, value::Value}};
 pub mod expr;
 pub mod stmt;
 /// The parser is the component that builds the AST. It stores the current token (recall the lexer) and an index/pointer into the token stream. The parser defines operator precedence, among other things.
@@ -152,10 +152,13 @@ impl Parser {
     }
     pub fn parse_factor(&mut self) -> Expr {
         match self.advance() {
-            Token::Number(n) => Expr::Number(n),
+            Token::Number(n) => Expr::Literal(Value::Number(n)),
+            Token::StringLiteral(s) => Expr::Literal(Value::Str(s)),
+            Token::True => Expr::Literal(Value::Bool(true)),
+            Token::False => Expr::Literal(Value::Bool(false)),
             Token::Identifier(name) => Expr::Identifier(name),
             Token::LParen => {
-                let expr = self.parse_expr();
+                let expr = self.parse_compression();
                 self.advance();
                 expr
             }

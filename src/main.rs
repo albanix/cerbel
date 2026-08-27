@@ -14,13 +14,10 @@ fn main() {
     
     // Получаем все токены примерно [Number(2), Plus, LParen, Number(2), Star, Number(2), RParen]
     let token = lexer.tokenize();
-     
-    println!("{:?}", token);
     // инитим парсер
     let mut parser = Parser::new(token);
     let program = parser.parse_program();
     let mut env = Environment::new();
-    println!("{:#?}", program);
 
     for stmt in &program {
         exec(stmt, &mut env);

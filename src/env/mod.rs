@@ -2,8 +2,10 @@ use std::collections::HashMap;
 use std::env;
 use std::fs;
 
+use crate::tokens::value::Value;
+
 pub struct Environment {
-    pub variables: HashMap<String, f64>
+    pub variables: HashMap<String, Value>
 }
 
 impl Environment {
@@ -13,13 +15,13 @@ impl Environment {
         }
     }
 
-    pub fn set(&mut self, name: String, value: f64) {
+    pub fn set(&mut self, name: String, value: Value) {
         self.variables.insert(name, value);
     }
 
-    pub fn get(&self, name: &str) -> f64 {
+    pub fn get(&self, name: &str) -> Value {
         match self.variables.get(name) {
-            Some(v) => *v,
+            Some(v) => v.clone(),
             None => panic!("Variable are not initialized: {}", name)
         }
     }

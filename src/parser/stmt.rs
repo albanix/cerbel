@@ -1,4 +1,4 @@
-use crate::{env::Environment, expr::Expr, parser::expr::eval};
+use crate::{env::Environment, expr::Expr, parser::expr::eval, tokens::value::Value};
 
 #[derive(Debug, Clone)]
 pub enum Stmt {
@@ -21,12 +21,17 @@ pub fn exec(stmt: &Stmt, env: &mut Environment) {
 
         Stmt::ExprStmt(expr) => {
             let value = eval(expr, env);
-            println!("=> {}", value);
+            println!("=> {:?}", value);
         }
 
         Stmt::If { condition, then_branch, else_branch } => {
-            let cond_branch = eval(condition, env);
-            if cond_branch != 0.0 {
+            let cond = eval(condition, env);
+            let is_true = match cond {
+                Value::Bool(b) => b,
+                other => panic!("IF condition must be bool, got: {:?}", other),
+            };
+
+            if is_true {
                 for stmt in then_branch {
                     exec(stmt, env);
                 }

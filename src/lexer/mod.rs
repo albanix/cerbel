@@ -56,10 +56,17 @@ impl Lexer {
                         "def" => Token::Def,
                         "if" => Token::If,
                         "else" => Token::Else,
+                        "true" => Token::True,
+                        "false" => Token::False,
                         _ => Token::Identifier(identifier)
                     };
 
                     tokens.push(token);
+                }
+
+                '"' => {
+                    let s = self.read_string();
+                    tokens.push(Token::StringLiteral(s));
                 }
 
                 '=' => {
@@ -195,6 +202,22 @@ impl Lexer {
         }
 
         self.char[start..self.pos].iter().collect()
+    }
+
+    pub fn read_string(&mut self) -> String {
+        self.advance();
+        let start = self.pos;
+
+        while let Some(ch) = self.current_char() {
+            if ch == '"' {
+                break;
+            }
+            self.advance();
+        }
+
+        let s: String = self.char[start..self.pos].iter().collect();
+        self.advance();
+        s
     }
 
     pub fn peek_char(&self) -> Option<char> {

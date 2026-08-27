@@ -1,0 +1,9 @@
+def volodya = "vova";
+def voloda_age = 18;
+if voloda_age < 18 {
+    voloda_age;
+    "Нельзя бухать";
+} else {
+    voloda_age;
+    "Можно!";
+}
