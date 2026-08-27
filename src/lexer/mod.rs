@@ -69,6 +69,7 @@ impl Lexer {
                         self.advance();
                     } else {
                         tokens.push(Token::Equal);
+                        self.advance();
                     }
                 }
 

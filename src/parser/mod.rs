@@ -38,10 +38,38 @@ impl Parser {
     pub fn parse_statement(&mut self) -> Stmt {
         match self.current_token() {
             Token::Def => self.parse_def(),
+            Token::If => self.parse_if(),
             _ => self.parse_expr_statement()
         }
     }
 
+    pub fn parse_if(&mut self) -> Stmt {
+        self.advance();
+        
+        let condition = self.parse_compression();
+        self.advance();
+
+        let mut then_branch = Vec::new();
+        while *self.current_token() != Token::RBrace {
+            then_branch.push(self.parse_statement());
+        }
+        self.advance();
+
+        let else_branch = if *self.current_token() == Token::Else {
+            self.advance();
+            self.advance();
+            let mut stmts = Vec::new();
+            while *self.current_token() != Token::RBrace {
+                stmts.push(self.parse_statement());
+            }
+            self.advance();
+            Some(stmts)
+        } else {
+            None
+        };
+
+        Stmt::If { condition, then_branch, else_branch }
+    }
     pub fn parse_def(&mut self) -> Stmt {
         self.advance();
         let name = match self.advance() {

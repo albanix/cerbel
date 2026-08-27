@@ -23,5 +23,18 @@ pub fn exec(stmt: &Stmt, env: &mut Environment) {
             let value = eval(expr, env);
             println!("=> {}", value);
         }
+
+        Stmt::If { condition, then_branch, else_branch } => {
+            let cond_branch = eval(condition, env);
+            if cond_branch != 0.0 {
+                for stmt in then_branch {
+                    exec(stmt, env);
+                }
+            } else if let Some(branch) = else_branch {
+                for stmt in branch {
+                    exec(stmt, env);
+                }
+            }
+        }
     }
 }
